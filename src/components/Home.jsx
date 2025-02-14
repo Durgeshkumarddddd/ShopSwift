@@ -1,19 +1,44 @@
+import React from 'react';
 import Navbar from "./Navbar";
-import { Link } from 'react-router-dom'
-import {ProductContext} from './utils/Context';
-import {useContext} from 'react' ;
+import { Link,useLocation } from 'react-router-dom'
+import { ProductContext } from '../utils/Context';
+import { useContext, useEffect, useState } from 'react';
 import Loading from './Loading';
+import axios from '../utils/axios';
 export default function Home() {
-  const [products]= useContext(ProductContext);
-  console.log(products);
+    
+    const [products] = useContext(ProductContext);
+    const {search} = useLocation();
+    let category = decodeURIComponent( search.split("=")[1]);
+    let [filterProducts, setfilterProducts] = useState(null);
 
+    const getcategorydata = async ()=>{
+          try{
+            let {data} = await axios.get(`/products/category/${category}`)
+            setfilterProducts(data);
+          }catch(err){
+            console.log(err);
+            alert("Error in fetching data")
+          }
+    }
+    useEffect(()=>{
+        if(!filterProducts || category == "undefined") setfilterProducts(products)
+        if(category != "undefined") getcategorydata();
+    },[category, products])
+
+    
     return products ? (
-        <div className=" w-screen h-screen flex  " >
+        <div className="h-screen w-screen flex">
             <Navbar />
-            <Link to={'/details'} className="card shadow-xl rounded w-[19%] h-[40vh] bg-white flex-col flex justify-center items-center m-8 ">
-                <div className="w-[60%] h-[80%] bg-contain bg-no-repeat hover:scale-110 mb-2 " style={{ backgroundImage: "url(https://media.istockphoto.com/id/1405455585/photo/buddha-image-on-white-background-isolate.jpg?s=2048x2048&w=is&k=20&c=TYZkFMCEjxtqm83siHOQaANGNwmLiC9aOnhfQehnlvU=)" }} ></div>
-                <div className="hover:text-blue-700"> This is the Title of product </div>
-            </Link>
+            <div className="h-full w-[85%] flex flex-wrap overflow-x-hidden overflow-y-auto mt-[5%]">
+                {filterProducts && filterProducts.map((product) =>
+                    <Link to={`/details/${product.id}`} className="card shadow-xl rounded w-[19%] h-[40vh] bg-white flex-col flex justify-center mb-12 ml-7 items-center p-4">
+                        <div className="w-[60%] h-[80%] bg-contain flex justify-center items-center bg-no-repeat hover:scale-110 " style={{ backgroundImage: `url(${product.image})` }} ></div>
+                        <div className="hover:text-blue-700"> {product.title}</div>
+                    </Link>
+                )}
+            </div>
+
         </div>
     ) : (
         <Loading />
