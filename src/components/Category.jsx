@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
-import {ProductContext} from '../utils/Context';
+import { ProductContext } from '../utils/Context';
 import Navbar from './Navbar';
-import {Link, useParams,useLocation} from 'react-router-dom'
+import {Link, useParams,useLocation} from 'react-router-dom';
 export default function Category() {
     const [products] = useContext(ProductContext);
     let catUrl = useParams()

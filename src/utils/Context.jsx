@@ -3,18 +3,18 @@ import axios from './axios';
 export let ProductContext = createContext();
 export  function Context(props) {
     console.log(props);
-    let [products, setProducts] = useState(null);
-    const getproducts = async () => {
-        try {
-            const { data } = await axios('/products');
-            setProducts(data);
-        } catch (err) {
-            console.log(err);
-        }
-    }
-    useEffect(() => {
-          getproducts();
-    }, []);
+    let [products, setProducts] = useState(JSON.parse(localStorage.getItem("products")) || null);
+    // const getproducts = async () => {
+    //     try {
+    //         const { data } = await axios('/products');
+    //         setProducts(data);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }
+    // useEffect(() => {
+    //       getproducts();
+    // }, []);
 
     return (
         <>

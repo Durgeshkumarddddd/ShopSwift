@@ -10,8 +10,7 @@ export default function Navbar() {
 
     return (
         <nav className="w-[15%] h-full bg-zinc-100 flex flex-col items-center ">
-           
-            <div className="pt-4 border text-xl rounded border-blue-300 p-3 my-5 mt-8 text-blue-400 "> Add New Product </div>
+           <Link to="/create" className="pt-4 border text-xl rounded border-blue-300 p-3 my-5 mt-8 text-blue-400 " > Add New Product</Link>
             <hr className="mt-3 w-[80%] "></hr>
             <h1 className="my-4 text-2xl w-[80%] font-medium"> Category Filter</h1>
             <div className="flex flex-col">

@@ -23,7 +23,10 @@ export default function Home() {
     }
     useEffect(()=>{
         if(!filterProducts || category == "undefined") setfilterProducts(products)
-        if(category != "undefined") getcategorydata();
+        if(category != "undefined") {
+            // getcategorydata();
+            setfilterProducts(products.filter((p)=> p.category == category))
+        } 
     },[category, products])
 
     
