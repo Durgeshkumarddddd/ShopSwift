@@ -3,7 +3,7 @@ import {useState, useContext} from 'react';
 import {ProductContext} from '../utils/Context';
 import { nanoid } from 'nanoid'
 import {useNavigate} from 'react-router-dom';
-
+import { toast } from "react-toastify";
 export default function Add(){
      
 
@@ -14,7 +14,6 @@ export default function Add(){
     const [price, setPrice] = useState('');
     const [image, setImage] = useState('');
     const navigate = useNavigate();
- 
     const submithandler =(e)=>{
        e.preventDefault();
        if(title.trim().length < 5 || description.trim().length <5 || category.trim().length < 5 || price.trim().length < 2 || image.trim().length < 5){
@@ -31,6 +30,7 @@ export default function Add(){
        }
        setProducts([...products, product]);
        localStorage.setItem("products", JSON.stringify([...products, product]))
+       toast.success("🟢 Success! Your action was completed.");
        navigate('/')
     }
 
@@ -44,8 +44,9 @@ export default function Add(){
                 <input type='Number' value={price} name='price' placeholder='Price' onChange={(e)=> setPrice(e.target.value)} className=' w-[48%] bg-zinc-100  p-3 text-2xl rounded-xl' ></input>
                 </div>
                 <textarea name='description' value={description} type='text' placeholder='Description' onChange={(e)=> setDescription(e.target.value)} className='p-3  bg-zinc-100  w-1/2 mb-4 h-[25%] text-2xl rounded-xl'></textarea>
-                <button type='submit' className='p-5 m-5 border-blue-300 rounded border text-blue-500 text-xl' > Add Product </button>
+                <div className='w-1/2'>
+                <button type='submit' className='p-3 m-2 border-blue-200 rounded border text-blue-500 text-xl ' > Add Product </button>
+                </div> 
         </form>
-
-    );
+     );
 }

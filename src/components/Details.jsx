@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link,useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import {ProductContext} from '../utils/Context';
 import axios from '../utils/axios';
@@ -8,6 +8,7 @@ export default function Details(){
      const [products, setProducts] = useContext(ProductContext);
      const { id } = useParams();
      console.log(id)
+     const navigate = useNavigate();
   // const getproduct = async () =>{
   //   try{
   //     let {data} = await axios.get(`/products/${id}`)
@@ -21,6 +22,13 @@ export default function Details(){
     }
    
   }, [])
+ function productDeletehandler(id){
+    const filteredProducts= products.filter((p)=> p.id != id);
+    setProducts(filteredProducts);
+    localStorage.setItem('products', JSON.stringify(filteredProducts))
+    navigate('/')
+  }
+
 
   return product ? (
     <>
@@ -38,8 +46,8 @@ export default function Details(){
           </div> */}
           <div className='flex flex-row justify-between'>
 
-            <Link className='mr-[4%] bg-amber-500 text-2xl border-red-100 px-[15%] py-[5%] rounded-xl ' to={'/edit'} >Edit</Link>
-            <Link className='bg-amber-500 text-2xl border-red-100 px-[11%] py-[5%] rounded-xl ' to={'/delete'} >Delete</Link>
+            <Link to={`/edit/${id}`} className='mr-[4%] bg-amber-500 text-2xl border-red-100 px-[15%] py-[5%] rounded-xl ' >Edit</Link>
+            <button onClick={()=> productDeletehandler(id)} className='bg-amber-500 text-2xl border-red-100 px-[11%] py-[5%] rounded-xl ' to={'/delete'} >Delete</button>
           </div>
 
         </div>
